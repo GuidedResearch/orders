@@ -32,6 +32,9 @@ import java.util.regex.Pattern;
 
 @RepositoryRestController
 public class OrdersController {
+	
+	private static int sleep = 0;
+	
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -52,7 +55,7 @@ public class OrdersController {
     @ResponseBody
     CustomerOrder newOrder(@RequestBody NewOrderResource item) {
         try {
-
+        	Thread.sleep(sleep);
             if (item.address == null || item.customer == null || item.card == null || item.items == null) {
                 throw new InvalidOrderException("Invalid order request. Order requires customer, address, card and items.");
             }
@@ -171,5 +174,12 @@ public class OrdersController {
         public InvalidOrderException(String s) {
             super(s);
         }
+    }
+    
+    @RequestMapping(value = "/sleep/{sleep}", method = RequestMethod.GET)
+    public boolean setSleep(@PathVariable int sleep) {
+    	this.sleep = sleep;
+    	return true;
+    
     }
 }
