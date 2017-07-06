@@ -30,7 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-@RepositoryRestController
+@RestController
 public class OrdersController {
 	
 	private static int sleep = 0;
@@ -175,11 +175,10 @@ public class OrdersController {
             super(s);
         }
     }
-    
+
     @RequestMapping(value = "/sleep/{sleep}", method = RequestMethod.GET)
-    public boolean setSleep(@PathVariable int sleep) {
+    public Integer setSleep(@PathVariable int sleep) {
     	this.sleep = sleep;
-    	return true;
-    
+    	return this.sleep;
     }
 }
