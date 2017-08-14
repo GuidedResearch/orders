@@ -178,7 +178,8 @@ public class OrdersController {
 
     @RequestMapping(value = "/sleep/{sleep}", method = RequestMethod.GET)
     public Integer setSleep(@PathVariable int sleep) {
+    	int oldSleep = this.sleep;
     	this.sleep = sleep;
-    	return this.sleep;
+    	return oldSleep;
     }
 }
