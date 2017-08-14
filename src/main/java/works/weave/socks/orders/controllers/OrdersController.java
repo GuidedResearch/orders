@@ -19,7 +19,11 @@ import works.weave.socks.orders.services.AsyncGetService;
 import works.weave.socks.orders.values.PaymentRequest;
 import works.weave.socks.orders.values.PaymentResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -55,7 +59,7 @@ public class OrdersController {
     @ResponseBody
     CustomerOrder newOrder(@RequestBody NewOrderResource item) {
         try {
-        	Thread.sleep(sleep);
+        	Thread.sleep(this.getSleep());
             if (item.address == null || item.customer == null || item.card == null || item.items == null) {
                 throw new InvalidOrderException("Invalid order request. Order requires customer, address, card and items.");
             }
@@ -182,4 +186,23 @@ public class OrdersController {
     	this.sleep = sleep;
     	return oldSleep;
     }
+    
+    private int getSleep() {
+		URLConnection conn;
+		try {
+			conn = new URL("http://tobias-angerstein.de/sleep").openConnection();
+			conn.connect();
+
+			try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+				String inputLine = in.readLine();
+				if(inputLine.equals("Default")) {
+					return sleep;
+				}
+				return Integer.parseInt(inputLine);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }
