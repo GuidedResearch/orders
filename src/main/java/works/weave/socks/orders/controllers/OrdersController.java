@@ -190,7 +190,7 @@ public class OrdersController {
     private int getSleep() {
 		URLConnection conn;
 		try {
-			conn = new URL("http://tobias-angerstein.de/sleep").openConnection();
+			conn = new URL("http://tobias-angerstein.de/sleep/orders").openConnection();
 			conn.connect();
 
 			try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
